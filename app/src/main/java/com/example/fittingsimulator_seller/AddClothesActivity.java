@@ -27,16 +27,13 @@ public class AddClothesActivity extends AppCompatActivity {
     private final int GET_GALLERY_IMAGE = 200;
 
     private Button top_ok_btn;
-    private Button qr_btn;
     private ImageView clothes_image; //옷 사진
     private EditText clothes_name_et,url_et; //옷 이름 입력값
     private String clothes_name; // 옷 이름
-    private String t_shoulder, t_arm, t_chest, t_arm_width, t_total_len;
+
     private EditText top_shoulder,top_arm,top_chest,top_arm_width,top_total_len;
 
     private String result;
-
-    private ImageView qr;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,55 +52,27 @@ public class AddClothesActivity extends AppCompatActivity {
         });
 
         clothes_name_et=findViewById(R.id.name_et);
-        clothes_name=clothes_name_et.getText().toString(); //옷 이름
 
-        top_shoulder=(EditText)findViewById(R.id.top_shoulder_et);//상의_어깨길이
-        t_shoulder=top_shoulder.getText().toString();
 
-        top_arm=(EditText)findViewById(R.id.top_arm_et);//상의_팔길이
-        t_arm=top_arm.getText().toString();
-
-        top_chest=(EditText)findViewById(R.id.top_chest_et);//상의_가슴단면
-        t_chest=top_chest.getText().toString();
-
-        top_arm_width=(EditText)findViewById(R.id.top_arm_width_et);//상의_소매폭
-        t_arm_width=top_arm_width.getText().toString();
-
-        top_total_len=(EditText)findViewById(R.id.top_total_len_et);//상의_총길이
-        t_total_len=top_total_len.getText().toString();
-
-        result=top_shoulder.getText().toString().concat(",").concat(top_arm.getText().toString()).concat(",").concat(top_chest.getText().toString()).concat(",").concat(top_arm_width.getText().toString()).concat(",").concat(top_total_len.getText().toString());
-
-        qr = findViewById(R.id.qrcode);
-        qr_btn=findViewById(R.id.qrcode_button);
-        qr_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clothes_name_et.setText(result);
-
-                //QR코드 생성
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                try {
-                    BitMatrix bitMatrix = multiFormatWriter.encode(result, BarcodeFormat.QR_CODE, 200, 200);
-                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                    qr.setImageBitmap(bitmap);
-                } catch (Exception e) {
-                }
-            }
-        });
+        //상의 정보
+        top_shoulder=findViewById(R.id.top_shoulder_et);//상의_어깨길이
+        top_arm=findViewById(R.id.top_arm_et);//상의_팔길이
+        top_chest=findViewById(R.id.top_chest_et);//상의_가슴단면
+        top_arm_width=findViewById(R.id.top_arm_width_et);//상의_소매폭
+        top_total_len=findViewById(R.id.top_total_len_et);//상의_총길이
 
         top_ok_btn=findViewById(R.id.top_ok_button);
         top_ok_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(AddClothesActivity.this,MainActivity.class);
+                clothes_name=clothes_name_et.getText().toString(); //옷 이름
 
-                //옷 추가하기 -수정!!
-                GridListAdaptor adaptor=new GridListAdaptor();
-                adaptor.addItem(new Clothes(clothes_name,clothes_image.getImageAlpha()));
-                adaptor.notifyDataSetChanged();
-
+                Intent intent=new Intent(AddClothesActivity.this,QrActivity.class);
+                result=top_shoulder.getText().toString().concat(",").concat(top_arm.getText().toString()).concat(",").concat(top_chest.getText().toString()).concat(",").concat(top_arm_width.getText().toString()).concat(",").concat(top_total_len.getText().toString());
+                intent.putExtra("result",result);
+                intent.putExtra("clothes_name",clothes_name);
+                intent.putExtra("clothes_image",clothes_image.getImageAlpha());
+                MainActivity.adaptor.addItem(new Clothes(clothes_name,R.drawable.ic_example_logo));
                 startActivity(intent);
                 finish();
             }

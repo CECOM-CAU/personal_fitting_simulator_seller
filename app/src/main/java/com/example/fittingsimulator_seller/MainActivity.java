@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private String name;
     private int image;
 
+    static GridListAdaptor adaptor=new GridListAdaptor();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         GridView gridView=findViewById(R.id.gridview);
-        GridListAdaptor adaptor=new GridListAdaptor();
         //아이템 추가
-        adaptor.addItem(new Clothes("옷1",R.drawable.ic_logo));
-        adaptor.addItem(new Clothes("옷2",R.drawable.ic_top));
-
         gridView.setAdapter(adaptor);
+
+        adaptor.notifyDataSetChanged();
 
         //아이템 선택되었을때 -> 체크박스
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

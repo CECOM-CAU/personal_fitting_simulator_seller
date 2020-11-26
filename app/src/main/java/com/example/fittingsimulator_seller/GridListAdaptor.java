@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class GridListAdaptor extends BaseAdapter {
-    final ArrayList<Clothes> c = new ArrayList<Clothes>();
+    static ArrayList<Clothes> c = new ArrayList<Clothes>();
     Context context;
 
     public void addItem(Clothes item){
@@ -53,9 +53,8 @@ public class GridListAdaptor extends BaseAdapter {
         nameText.setText(c_item.getName());
         image.setImageResource(c_item.getImage());
 
-        checkBoxContent = (CheckBox)convertView.findViewById(R.id.checkBox);
-        checkBoxContent.setClickable(false);
-
+        //checkBoxContent = (CheckBox)convertView.findViewById(R.id.checkBox);
+        //checkBoxContent.setClickable(false);
 
         return convertView;
     }
