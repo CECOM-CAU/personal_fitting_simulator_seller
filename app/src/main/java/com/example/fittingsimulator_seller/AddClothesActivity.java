@@ -3,10 +3,13 @@ package com.example.fittingsimulator_seller;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +22,8 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import java.io.ByteArrayOutputStream;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,6 +39,8 @@ public class AddClothesActivity extends AppCompatActivity {
     private EditText top_shoulder,top_arm,top_chest,top_arm_width,top_total_len;
 
     private String result;
+    private  Uri selectedImageUri;
+    private Bitmap sendBitmap;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,13 +53,13 @@ public class AddClothesActivity extends AppCompatActivity {
         clothes_image.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                intent. setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(intent, GET_GALLERY_IMAGE);
+
             }
         });
 
         clothes_name_et=findViewById(R.id.name_et);
-
 
         //상의 정보
         top_shoulder=findViewById(R.id.top_shoulder_et);//상의_어깨길이
@@ -68,11 +75,21 @@ public class AddClothesActivity extends AppCompatActivity {
                 clothes_name=clothes_name_et.getText().toString(); //옷 이름
 
                 Intent intent=new Intent(AddClothesActivity.this,QrActivity.class);
+                //result="t".concat(top_shoulder.getText().toString()).concat(",").concat(top_arm.getText().toString()).concat(",").concat(top_chest.getText().toString()).concat(",").concat(top_arm_width.getText().toString()).concat(",").concat(top_total_len.getText().toString());
+
                 result=top_shoulder.getText().toString().concat(",").concat(top_arm.getText().toString()).concat(",").concat(top_chest.getText().toString()).concat(",").concat(top_arm_width.getText().toString()).concat(",").concat(top_total_len.getText().toString());
                 intent.putExtra("result",result);
                 intent.putExtra("clothes_name",clothes_name);
-                intent.putExtra("clothes_image",clothes_image.getImageAlpha());
-                MainActivity.adaptor.addItem(new Clothes(clothes_name,R.drawable.ic_example_logo));
+
+                BitmapDrawable drawable = (BitmapDrawable) clothes_image.getDrawable();
+                sendBitmap = drawable.getBitmap();
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                intent.putExtra("image",byteArray);
+
+                //MainActivity.adaptor.addItem(new Clothes(clothes_name,R.drawable.ic_example_logo));
                 startActivity(intent);
                 finish();
             }
@@ -97,9 +114,8 @@ public class AddClothesActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
-            Uri selectedImageUri = data.getData();
+            selectedImageUri = data.getData();
             clothes_image.setImageURI(selectedImageUri);
-
         }
 
     }

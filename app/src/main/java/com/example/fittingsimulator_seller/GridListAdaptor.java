@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,9 +31,16 @@ public class GridListAdaptor extends BaseAdapter {
         return c.get(position);
     }
 
-    public long getItemId(int position){
-        return position;
+    public long getItemId(int position){ return position; }
+
+    public void remove(int position){
+        c.remove(position);
     }
+
+    public boolean isChecked(int position){
+        return c.get(position).check;
+    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -48,14 +56,20 @@ public class GridListAdaptor extends BaseAdapter {
        //그리드 화면에 추가할 내용 - 현재는 옷 이름과 사진
         TextView nameText=convertView.findViewById(R.id.nameText);
         ImageView image=convertView.findViewById(R.id.clothe_image);
-
+        checkBoxContent=convertView.findViewById(R.id.checkBox);
 
         nameText.setText(c_item.getName());
-        image.setImageResource(c_item.getImage());
+        image.setImageBitmap(c_item.getImage());
 
-        //checkBoxContent = (CheckBox)convertView.findViewById(R.id.checkBox);
-        //checkBoxContent.setClickable(false);
+        checkBoxContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean newState=!c.get(position).isChecked();
+                c.get(position).check=newState;
+            }
+        });
 
+        checkBoxContent.setChecked(isChecked(position));
         return convertView;
     }
 }

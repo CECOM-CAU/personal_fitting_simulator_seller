@@ -1,27 +1,35 @@
 package com.example.fittingsimulator_seller;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 public class Clothes {
 
     private String name;
-    private int image;
+    private Bitmap image;
+    private Bitmap qr;
+    boolean check;
 
-    Clothes(String name, int image){
+    Clothes(Boolean check, String name, Bitmap image, Bitmap qr){
+        this.check=check;
         this.name=name;
         this.image=image;
+        this.qr=qr;
     }
+
+    boolean getCheck(){return check;}
     String getName(){
         return name;
     }
 
-    int getImage(){
+    Bitmap getImage(){
         return image;
     }
 
-    void setTopName(String name){
-        this.name=name;
+    Bitmap getQrImage(){return qr;}
+
+    public boolean isChecked(){
+        return check;
     }
 
-    void setTopImage(int  image){
-        this.image=image;
-    }
 }

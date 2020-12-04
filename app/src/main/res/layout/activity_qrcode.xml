@@ -4,22 +4,44 @@
     android:layout_height="match_parent">
 
 
-            <ImageView
-                android:id="@+id/qrcode"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="3"/>
-
-    <Button
-        android:id="@+id/ok_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="확인"
-        android:fontFamily="@font/hanna"
-        android:layout_below="@id/qrcode"
+    <ImageView
+        android:id="@+id/qrcode"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        android:layout_weight="3"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/qrcode">
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="저장"
+            android:fontFamily="@font/hanna"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"/>
+        <Button
+            android:id="@+id/ok_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="확인"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="60dp"
+            android:fontFamily="@font/hanna"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+
 
 </RelativeLayout>
